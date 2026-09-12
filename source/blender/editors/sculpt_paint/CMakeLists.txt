@@ -10,6 +10,8 @@ set(INC
   ../mesh
   ../uvedit
   ../../blenlib
+  ../../golemics/host
+  ../../draw/engines/eevee
   ../../makesrna
   ../../../../intern/eigen
   # RNA_prototypes.hh
@@ -93,6 +95,8 @@ set(SRC
   mesh/paint_vertex_weight_utils.cc
   mesh/paint_weight.cc
   mesh/sculpt.cc
+  mesh/golemics_voxel_sculpt.cc
+  mesh/golemics_gpu_paint.cc
   mesh/sculpt_automasking.cc
   mesh/sculpt_boundary.cc
   mesh/sculpt_cloth.cc
@@ -235,3 +239,12 @@ endif()
 blender_add_lib(bf_editor_sculpt_paint "${SRC}" "${INC}" "${INC_SYS}" "${LIB}")
 # RNA_prototypes.hh
 add_dependencies(bf_editor_sculpt_paint bf_rna)
+
+target_link_libraries(bf_editor_sculpt_paint PRIVATE bf::golemics_backend bf::golemics_host)
+
+# The paint host catches exceptions from the isolated backend and GPU provider.
+if(MSVC)
+  set_source_files_properties(mesh/golemics_gpu_paint.cc PROPERTIES COMPILE_OPTIONS /EHsc)
+else()
+  set_source_files_properties(mesh/golemics_gpu_paint.cc PROPERTIES COMPILE_OPTIONS -fexceptions)
+endif()

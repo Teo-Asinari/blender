@@ -56,7 +56,7 @@ class UString {
    * https://github.com/microsoft/STL/issues/4427 */
   static const inline blender::detail::UStringEntry EMPTY_ENTRY = {"", hash_string("")};
 #else
-  static constexpr blender::detail::UStringEntry EMPTY_ENTRY = {"", hash_string("")};
+  static const inline blender::detail::UStringEntry EMPTY_ENTRY = {"", hash_string("")};
 #endif
 
  private:

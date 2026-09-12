@@ -811,7 +811,10 @@ void SourceProcessor::lower_resource_macro_placeholder_ast(Parser &parser)
 
     string first_of_pair;
     for (auto &&word_range : words_view) {
-      string word(word_range.begin(), word_range.end());
+      string word;
+      for (const char character : word_range) {
+        word.push_back(character);
+      }
       if (first_of_pair.empty()) {
         first_of_pair = std::move(word);
       }

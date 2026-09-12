@@ -112,6 +112,7 @@ set(SRC_DNA_OTHER_INC
 
 add_subdirectory(datatoc)
 add_subdirectory(gpu/shader_tool)
+add_subdirectory(golemics)
 add_subdirectory(editors)
 add_subdirectory(windowmanager)
 add_subdirectory(animrig)

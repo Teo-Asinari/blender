@@ -109,6 +109,7 @@ set(SRC
   engines/eevee/eevee_lookdev.cc
   engines/eevee/eevee_lut.cc
   engines/eevee/eevee_material.cc
+  engines/eevee/golemics_paint_override.cc
   engines/eevee/eevee_motion_blur.cc
   engines/eevee/eevee_pipeline.cc
   engines/eevee/eevee_precompute.cc
@@ -206,6 +207,7 @@ set(SRC
   engines/eevee/eevee_lookdev.hh
   engines/eevee/eevee_lut.hh
   engines/eevee/eevee_material.hh
+  engines/eevee/golemics_paint_override.hh
   engines/eevee/eevee_material_shared.hh
   engines/eevee/eevee_motion_blur.hh
   engines/eevee/eevee_pipeline.hh

@@ -155,6 +155,7 @@ MaterialPass MaterialModule::material_pass_get(Object *ob,
   MaterialPass matpass = MaterialPass();
   matpass.gpumat = inst_.shaders.material_shader_get(
       blender_mat, ntree, pipeline_type, geometry_type, use_deferred_compilation, default_mat);
+  matpass.golemics_paint_override = golemics_paint_override_for_object(ob);
 
   const bool is_forward = ELEM(pipeline_type,
                                MAT_PIPE_FORWARD,
@@ -225,7 +226,12 @@ MaterialPass MaterialModule::material_pass_get(Object *ob,
       /* Create a sub for this material as `shader_sub` is for sharing shader between materials. */
       matpass.sub_pass = &shader_sub->sub(GPU_material_get_name(matpass.gpumat));
       matpass.sub_pass->material_set(
-          *inst_.manager, matpass.gpumat, true, inst_.anisotropic_filtering);
+          *inst_.manager,
+          matpass.gpumat,
+          true,
+          inst_.anisotropic_filtering,
+          &matpass.golemics_paint_override.channels,
+          &matpass.golemics_paint_override.images);
     }
     else {
       matpass.sub_pass = nullptr;

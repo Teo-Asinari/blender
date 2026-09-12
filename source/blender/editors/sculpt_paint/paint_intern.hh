@@ -547,6 +547,13 @@ void SCULPT_OT_uv_sculpt_grab(wmOperatorType *ot);
 void SCULPT_OT_uv_sculpt_relax(wmOperatorType *ot);
 void SCULPT_OT_uv_sculpt_pinch(wmOperatorType *ot);
 
+/* golemics_gpu_paint.cc */
+void PAINT_OT_golemics_gpu_paint(wmOperatorType *ot);
+
+/* golemics_voxel_sculpt.cc */
+void SCULPT_OT_golemics_voxel_sculpt(wmOperatorType *ot);
+void SCULPT_OT_golemics_voxel_sculpt_end(wmOperatorType *ot);
+
 /* paint_utils.cc */
 float paint_calc_object_space_radius(const ViewContext &vc,
                                      const float3 &center,

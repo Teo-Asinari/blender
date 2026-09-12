@@ -21,6 +21,7 @@
 #include "draw_pass.hh"
 
 #include "eevee_material_shared.hh"
+#include "golemics_paint_override.hh"
 #include "eevee_shader.hh"
 #include "eevee_sync.hh"
 
@@ -314,6 +315,7 @@ struct ShaderKey {
 struct MaterialPass {
   GPUMaterial *gpumat = nullptr;
   PassMain::Sub *sub_pass = nullptr;
+  GolemicsPaintOverride golemics_paint_override;
 };
 
 struct Material {
@@ -321,6 +323,8 @@ struct Material {
   bool has_transparent_shadows;
   bool has_surface;
   bool has_volume;
+  /** Non-owning live paint texture supplied by the optional Golemics bridge. */
+  GolemicsPaintOverride golemics_paint_override;
   MaterialPass shadow;
   MaterialPass shading;
   MaterialPass prepass;

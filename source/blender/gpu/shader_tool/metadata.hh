@@ -12,6 +12,7 @@
 #include <cstdint>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <vector>
 
 /* Metadata extracted from shader source file.

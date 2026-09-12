@@ -621,6 +621,9 @@ void ED_operatortypes_paint()
   WM_operatortype_append(SCULPT_OT_uv_sculpt_grab);
   WM_operatortype_append(SCULPT_OT_uv_sculpt_relax);
   WM_operatortype_append(SCULPT_OT_uv_sculpt_pinch);
+  WM_operatortype_append(PAINT_OT_golemics_gpu_paint);
+  WM_operatortype_append(SCULPT_OT_golemics_voxel_sculpt);
+  WM_operatortype_append(SCULPT_OT_golemics_voxel_sculpt_end);
 
   /* vertex selection */
   WM_operatortype_append(PAINT_OT_vert_select_all);

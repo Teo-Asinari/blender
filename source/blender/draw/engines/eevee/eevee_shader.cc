@@ -24,7 +24,9 @@
 
 #include "BLI_assert.hh"
 #include "BLI_math_bits.hh"
+#include <cstddef>
 #include <fmt/format.h>
+#include <string>
 
 namespace blender::eevee {
 

@@ -62,6 +62,7 @@
 #include "draw_shader_shared.hh"
 #include "draw_state.hh"
 
+#include <array>
 #include <cstdint>
 #include <sstream>
 
@@ -251,7 +252,9 @@ class PassBase {
   void material_set(Manager &manager,
                     GPUMaterial *material,
                     bool deferred_texture_loading = false,
-                    GPUSamplerFiltering anisotropic_filtering = GPU_SAMPLER_FILTERING_DEFAULT);
+                    GPUSamplerFiltering anisotropic_filtering = GPU_SAMPLER_FILTERING_DEFAULT,
+                    const std::array<gpu::Texture *, 7> *golemics_paint_channels = nullptr,
+                    const std::array<blender::Image *, 7> *golemics_paint_images = nullptr);
 
   /**
    * Record a draw call.
@@ -1143,15 +1146,32 @@ template<class T>
 inline void PassBase<T>::material_set(Manager &manager,
                                       GPUMaterial *material,
                                       bool deferred_texture_loading,
-                                      GPUSamplerFiltering anisotropic_filtering)
+                                      GPUSamplerFiltering anisotropic_filtering,
+                                      const std::array<gpu::Texture *, 7> *golemics_paint_channels,
+                                      const std::array<blender::Image *, 7> *golemics_paint_images)
 {
   GPUPass *gpupass = GPU_material_get_pass(material);
   shader_set(GPU_pass_shader_get(gpupass));
-
   /* Bind all textures needed by the material. */
   ListBaseT<GPUMaterialTexture> textures = GPU_material_textures(material);
   for (GPUMaterialTexture *tex : ListBaseWrapper<GPUMaterialTexture>(textures)) {
     if (tex->ima) {
+      /* Paint uses the material's normal image nodes, so UVs and all PBR semantics remain
+       * identical during editing and after committing the images. */
+      gpu::Texture *live_texture = nullptr;
+      if (golemics_paint_channels && golemics_paint_images) {
+        for (int channel = 0; channel < 7; channel++) {
+          if ((*golemics_paint_images)[channel] == tex->ima) {
+            live_texture = (*golemics_paint_channels)[channel];
+            break;
+          }
+        }
+      }
+      if (live_texture) {
+        bind_texture(tex->sampler_name, live_texture, tex->sampler_state);
+        manager.hold_texture(live_texture);
+        continue;
+      }
       /* Image */
       const bool use_tile_mapping = tex->tiled_mapping_name[0];
       ImageUser *iuser = tex->iuser_available ? &tex->iuser : nullptr;
